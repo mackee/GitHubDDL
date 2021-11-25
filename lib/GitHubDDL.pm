@@ -257,7 +257,7 @@ __END__
 
 =head1 NAME
 
-GitHubDDL - GitDDL compatibility database migration utility on hosting GitHub
+GitHubDDL - GitDDL compatibility database migration utility when  hosted on GitHub
 
 =head1 SYNOPSIS
 
@@ -296,6 +296,11 @@ Copyright (C) mackee.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+=over 4
+=item *
+L<GitDDL>
 
 =head1 AUTHOR
 
