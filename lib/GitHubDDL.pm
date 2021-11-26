@@ -389,12 +389,15 @@ This method is useful for dry-run checking before upgrade_database.
 Upgrade database schema to latest ddl schema.
 
 =head1 SEE ALSO
+
 =over 4
-=item *
-L<GitDDL>
+
+=item * L<GitDDL>
 
 GitDDL is to compare local a DDL file and an older DDL from history in git.
 GitHubDDL is almost the same as GitDDL, but the only difference is that it retrieves the old DDL from GitHub.
+
+=back
 
 =head1 LICENSE
 

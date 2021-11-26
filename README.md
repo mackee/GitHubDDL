@@ -121,13 +121,11 @@ This method is useful for dry-run checking before upgrade\_database.
 Upgrade database schema to latest ddl schema.
 
 # SEE ALSO
-=over 4
-=item \*
-[GitDDL](https://metacpan.org/pod/GitDDL)
 
-GitDDL is to compare local a DDL file and an older DDL from history in git.
-GitHubDDL is almost the same as GitDDL, but the only difference is that it retrieves the old DDL from GitHub.
-GitHubDDL uses a lot of code copied from GitDDL.
+- [GitDDL](https://metacpan.org/pod/GitDDL)
+
+    GitDDL is to compare local a DDL file and an older DDL from history in git.
+    GitHubDDL is almost the same as GitDDL, but the only difference is that it retrieves the old DDL from GitHub.
 
 # LICENSE
 
