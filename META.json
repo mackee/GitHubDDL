@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "GitDDL compatibility database migration utility when  hosted on GitHub",
    "author" : [
       "mackee <macopy123@gmail.com>"
    ],
@@ -42,18 +42,36 @@
       },
       "runtime" : {
          "requires" : {
+            "DBI" : "0",
+            "Furl" : "0",
+            "Moo" : "0",
+            "SQL::Translator" : "1.62",
+            "Try::Tiny" : "0",
+            "Type::Tiny" : "0",
             "perl" : "5.008001"
          }
       },
       "test" : {
          "requires" : {
+            "Test::Mock::Furl" : "0",
             "Test::More" : "0.98"
          }
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/mackee/GitHubDDL/issues"
+      },
+      "homepage" : "https://github.com/mackee/GitHubDDL",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/mackee/GitHubDDL.git",
+         "web" : "https://github.com/mackee/GitHubDDL"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:MACOPY",
-   "x_serialization_backend" : "JSON::PP version 4.02",
+   "x_serialization_backend" : "JSON::PP version 4.06",
    "x_static_install" : 1
 }
