@@ -395,7 +395,6 @@ L<GitDDL>
 
 GitDDL is to compare local a DDL file and an older DDL from history in git.
 GitHubDDL is almost the same as GitDDL, but the only difference is that it retrieves the old DDL from GitHub.
-GitHubDDL uses a lot of code copied from GitDDL.
 
 =head1 LICENSE
 
