@@ -92,6 +92,12 @@ Create GitHubDDL object. Available options are:
 
     CodeRef for filtering sql content. It is invoked only in `diff()` method. (default: do nothing)
 
+- dump\_sql\_specified\_commit\_method => 'CodeRef' (Optional)
+
+    CodeRef for a bypass for dump SQL from GitHub. If you need to use your project-specific retrieve SQL method, you should set this option. This option is used as an alternative to the original method. (default: do nothing)
+
+    This CodeRef takes a commit hash as the only argument.
+
 ## check\_version()
 
 Compare versions latest ddl sql and database, and return true when both version is same.
