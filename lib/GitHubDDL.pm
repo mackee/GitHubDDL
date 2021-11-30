@@ -11,7 +11,7 @@ use SQL::Translator::Diff;
 use DBI;
 use Furl;
 use Cwd;
-use Types::Standard qw/Str ArrayRef CodeRef/;
+use Types::Standard qw/Str ArrayRef CodeRef Maybe/;
 use Try::Tiny;
 
 our $VERSION = "0.01";
@@ -55,6 +55,12 @@ has work_dir => (
     isa     => Str,
     lazy    => 1,
     default => sub { return Cwd::getcwd; },
+);
+
+has dump_sql_specified_commit_method => (
+    is      => 'ro',
+    isa     => Maybe[CodeRef],
+    default => sub { return undef },
 );
 
 has _dbh => (
@@ -231,6 +237,12 @@ sub _dump_sql_for_specified_commit {
     my ($self, $commit_hash, $outfile) = @_;
 
     open my $fh, '>', $outfile or croak $!;
+    if (my $method = $self->dump_sql_specified_commit_method) {
+        my $sql = $method->($commit_hash);
+        print $fh $sql;
+        close $fh;
+        return;
+    }
 
     my $url = sprintf "https://raw.githubusercontent.com/%s/%s/%s/%s",
         $self->github_user,
@@ -357,6 +369,12 @@ database table name that contains its git commit version. (default: git_ddl_vers
 =item * sql_filter => 'CodeRef' (Optional)
 
 CodeRef for filtering sql content. It is invoked only in C<< diff() >> method. (default: do nothing)
+
+=item * dump_sql_specified_commit_method => 'CodeRef' (Optional)
+
+CodeRef for a bypass for dump SQL from GitHub. If you need to use your project-specific retrieve SQL method, you should set this option. This option is used as an alternative to the original method. (default: do nothing)
+
+This CodeRef takes a commit hash as the only argument.
 
 =back
 

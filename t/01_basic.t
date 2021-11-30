@@ -124,15 +124,15 @@ subtest "upgrade_database" => sub {
 };
 
 my $ddl_version3 = join("", map { sprintf("%x", int(rand(16))) } 1..40);
-subtest "sql_filter" => sub {
-    $mocking_furl->($ddl_version2, $first_sql . "\n" . $second_sql);
-
-    my $third_sql = <<__SQL__;
+my $third_sql = <<__SQL__;
 CREATE TABLE third (
     id INTEGER NOT NULL,
     name VARCHAR(191) -- comment
 );
 __SQL__
+
+subtest "sql_filter" => sub {
+    $mocking_furl->($ddl_version2, $first_sql . "\n" . $second_sql);
 
     open my $fh, '>>', File::Spec->catfile($dir, 'sql', 'ddl.sql') or die $!;
     print $fh $third_sql;
@@ -181,5 +181,55 @@ __SQL__
 
     ok $gd2->check_version, 'check_version ok again';
 };
+
+subtest "dump_sql_specified_commit_method" => sub {
+    my $ddl_version4 = join("", map { sprintf("%x", int(rand(16))) } 1..40);
+    # not used this test
+    # if use this, fail test
+    $mocking_furl->($ddl_version1, 'INVALID DDL');
+
+    my $forth_sql = <<__SQL__;
+CREATE TABLE forth (
+    id INTEGER NOT NULL,
+    name VARCHAR(191)
+);
+__SQL__
+
+    open my $fh, '>>', File::Spec->catfile($dir, 'sql', 'ddl.sql') or die $!;
+    print $fh $forth_sql;
+    close $fh;
+
+    my $gd = GitHubDDL->new(
+        work_dir     => $dir,
+        ddl_file     => $ddl_file,
+        dsn          => ["dbi:SQLite:dbname=$dir/target.db", '', ''],
+        ddl_version  => $ddl_version4,
+        github_user  => $github_user,
+        github_repo  => $github_repo,
+        github_token => $github_token,
+        sql_filter   => sub {
+            my $sql = shift;
+            $sql =~ s/--.*//;
+            $sql;
+        },
+
+        dump_sql_specified_commit_method => sub {
+            my $commit = shift;
+
+            is $commit, $ddl_version3;
+            return join("\n", $first_sql, $second_sql, $third_sql);
+        },
+    );
+
+    like $gd->diff, qr/CREATE TABLE forth/, 'diff looks ok';
+
+    $gd->upgrade_database;
+
+    $gd->_dbh->do('INSERT INTO forth (id, name) VALUES (1, "test")')
+        or die $gd->_dbh->errstr;
+
+    ok $gd->check_version, 'check_version ok again';
+};
+
 
 done_testing;
